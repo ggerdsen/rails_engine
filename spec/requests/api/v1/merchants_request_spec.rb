@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Rails Engine" do
+describe "Merchants CRUD Functionality" do
   it "Merchant index" do
     create_list(:merchant, 3)
     get '/api/v1/merchants'
