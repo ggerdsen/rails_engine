@@ -8,8 +8,15 @@ class Api::V1::MerchantsController < ApplicationController
   end
   
   def create
-    binding.pry
     render json: MerchantSerializer.new(Merchant.create(merchant_params))
+  end
+  
+  def destroy
+    render json: MerchantSerializer.new(Merchant.destroy(params[:id]))
+  end
+  
+  def update
+    render json: MerchantSerializer.new(Merchant.update(params[:id], merchant_params))
   end
   
   private
@@ -17,4 +24,5 @@ class Api::V1::MerchantsController < ApplicationController
   def merchant_params
     params.permit(:name)
   end
+
 end

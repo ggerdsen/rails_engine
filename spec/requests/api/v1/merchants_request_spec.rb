@@ -27,8 +27,8 @@ describe "Rails Engine" do
     expect(merchant[:data][:attributes]).to have_key(:name)
   end
   
-  it "Merchant create and destroy" do
-    merchant_params = { name: "Wilderness Exchange" }
+  it "Merchant create" do
+    merchant_params = {name: "REI" }
     headers = { "CONTENT_TYPE" => "application/json" }
 
     post "/api/v1/merchants", params: JSON.generate(merchant_params), headers: headers
@@ -41,9 +41,36 @@ describe "Rails Engine" do
     expect(merchant.name).to eq(merchant_params[:name])
 
     merchant_json = JSON.parse(response.body, symbolize_names: true)
+    
     expect(merchant_json[:data][:id]).to eq(merchant.id.to_s)
     expect(merchant_json[:data][:type]).to eq("merchant")
     expect(merchant_json[:data][:attributes][:name]).to eq(merchant_params[:name])
+  end
+  
+  it "Merchant destroy" do
+    merchant = create(:merchant)
     
+    expect(Merchant.count).to eq(1)
+
+    delete "/api/v1/merchants/#{merchant.id}"
+    
+    expect(response).to be_successful
+    expect(Merchant.count).to eq(0)
+    expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
+  
+  it "Merchant update" do
+    id = create(:merchant).id
+    previous_name = Merchant.last.name
+    merchant_params = {name: "Big 5 Sports"}
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    # We include this header to make sure that these params are passed as JSON rather than as plain text
+    put "/api/v1/merchants/#{id}", params: JSON.generate(merchant_params), headers: headers
+    merchant = Merchant.find_by(id: id)
+
+    expect(response).to be_successful
+    expect(merchant.name).to_not eq(previous_name)
+    expect(merchant.name).to eq("Big 5 Sports")
   end
 end
