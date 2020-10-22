@@ -53,7 +53,6 @@ describe "Merchants CRUD Functionality" do
     expect(Merchant.count).to eq(1)
 
     delete "/api/v1/merchants/#{merchant.id}"
-    
     expect(response).to be_successful
     expect(Merchant.count).to eq(0)
     expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
