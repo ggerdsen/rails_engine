@@ -1,5 +1,17 @@
 require 'csv'
 
+Customer.destroy_all
+customers_csv = "./lib/customers.csv"
+CSV.foreach(customers_csv, headers: :true, header_converters: :symbol) do |row|
+  c = Customer.new
+  # c.csv_id = row[:id]
+  c.first_name = row[:first_name]
+  c.last_name = row[:last_name]
+  c.created_at = row[:created_at]
+  c.updated_at = row[:updated_at]
+  c.save!
+end
+
 Merchant.destroy_all
 merchants_csv = "./lib/merchants.csv"
 CSV.foreach(merchants_csv, headers: :true, header_converters: :symbol) do |row|
@@ -11,32 +23,6 @@ CSV.foreach(merchants_csv, headers: :true, header_converters: :symbol) do |row|
   m.save!
 end
 
-Customer.destroy_all
-customers_csv = "./lib/customers.csv"
-CSV.foreach(customers_csv, headers: :true, header_converters: :symbol) do |row|
-   c = Customer.new
-   # c.csv_id = row[:id]
-   c.first_name = row[:first_name]
-   c.last_name = row[:last_name]
-   c.created_at = row[:created_at]
-   c.updated_at = row[:updated_at]
-   c.save!
-end
-
-
-Invoice.destroy_all
-invoices_csv = "./lib/invoices.csv"
-CSV.foreach(invoices_csv, headers: :true, header_converters: :symbol) do |row|
-  i = Invoice.new
-  # i.csv_id = row[:id]
-  i.customer_id = row[:customer_id]
-  i.merchant_id = row[:merchant_id]
-  i.status = row[:status]
-  i.created_at = row[:created_at]
-  i.updated_at = row[:updated_at]
-  i.save!
-end
-
 Item.destroy_all
 items_csv = "./lib/items.csv"
 CSV.foreach(items_csv, headers: :true, header_converters: :symbol) do |row|
@@ -46,6 +32,19 @@ CSV.foreach(items_csv, headers: :true, header_converters: :symbol) do |row|
   i.description = row[:description]
   i.unit_price = ((row[:unit_price].to_f)/100).round(2)
   i.merchant_id = row[:merchant_id]
+  i.created_at = row[:created_at]
+  i.updated_at = row[:updated_at]
+  i.save!
+end
+
+Invoice.destroy_all
+invoices_csv = "./lib/invoices.csv"
+CSV.foreach(invoices_csv, headers: :true, header_converters: :symbol) do |row|
+  i = Invoice.new
+  # i.csv_id = row[:id]
+  i.customer_id = row[:customer_id]
+  i.merchant_id = row[:merchant_id]
+  i.status = row[:status]
   i.created_at = row[:created_at]
   i.updated_at = row[:updated_at]
   i.save!
@@ -77,3 +76,7 @@ CSV.foreach(transactions_csv, headers: :true, header_converters: :symbol) do |ro
   t.updated_at = row[:updated_at]
   t.save!
 end
+
+# ActiveRecord::Base.connection.tables.each do |t| 
+#   ActiveRecord::Base.connection.reset_pk_sequence!(t)
+# end
