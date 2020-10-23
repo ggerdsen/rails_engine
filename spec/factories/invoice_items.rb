@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :invoice_item do
-    csv_id { 1 }
     item_id { 1 }
     invoice_id { 1 }
     quantity { 1 }

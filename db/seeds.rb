@@ -4,7 +4,7 @@ Customer.destroy_all
 customers_csv = "./lib/customers.csv"
 CSV.foreach(customers_csv, headers: :true, header_converters: :symbol) do |row|
   c = Customer.new
-  # c.csv_id = row[:id]
+  c.id = row[:id]
   c.first_name = row[:first_name]
   c.last_name = row[:last_name]
   c.created_at = row[:created_at]
@@ -16,7 +16,7 @@ Merchant.destroy_all
 merchants_csv = "./lib/merchants.csv"
 CSV.foreach(merchants_csv, headers: :true, header_converters: :symbol) do |row|
   m = Merchant.new
-  # m.csv_id = row[:id]
+  m.id = row[:id]
   m.name = row[:name]
   m.created_at = row[:created_at]
   m.updated_at = row[:updated_at]
@@ -27,7 +27,7 @@ Item.destroy_all
 items_csv = "./lib/items.csv"
 CSV.foreach(items_csv, headers: :true, header_converters: :symbol) do |row|
   i = Item.new
-  # i.csv_id = row[:id]
+  i.id = row[:id]
   i.name = row[:name]
   i.description = row[:description]
   i.unit_price = ((row[:unit_price].to_f)/100).round(2)
@@ -41,7 +41,7 @@ Invoice.destroy_all
 invoices_csv = "./lib/invoices.csv"
 CSV.foreach(invoices_csv, headers: :true, header_converters: :symbol) do |row|
   i = Invoice.new
-  # i.csv_id = row[:id]
+  i.id = row[:id]
   i.customer_id = row[:customer_id]
   i.merchant_id = row[:merchant_id]
   i.status = row[:status]
@@ -54,7 +54,7 @@ InvoiceItem.destroy_all
 invoice_items_csv = "./lib/invoice_items.csv"
 CSV.foreach(invoice_items_csv, headers: :true, header_converters: :symbol) do |row|
   ii = InvoiceItem.new
-  # ii.csv_id = row[:id]
+  ii.id = row[:id]
   ii.item_id = row[:item_id]
   ii.invoice_id = row[:invoice_id]
   ii.quantity = row[:quantity]
@@ -68,7 +68,7 @@ Transaction.destroy_all
 transactions_csv = "./lib/transactions.csv"
 CSV.foreach(transactions_csv, headers: :true, header_converters: :symbol) do |row|
   t = Transaction.new
-  # t.csv_id = row[:id]
+  t.id = row[:id]
   t.invoice_id = row[:invoice_id]
   t.credit_card_number = row[:credit_card_number]
   t.result = row[:result]
@@ -77,6 +77,6 @@ CSV.foreach(transactions_csv, headers: :true, header_converters: :symbol) do |ro
   t.save!
 end
 
-# ActiveRecord::Base.connection.tables.each do |t| 
-#   ActiveRecord::Base.connection.reset_pk_sequence!(t)
-# end
+ActiveRecord::Base.connection.tables.each do |t|
+  ActiveRecord::Base.connection.reset_pk_sequence!(t)
+end
