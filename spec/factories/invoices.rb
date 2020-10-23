@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :invoice do
-    csv_id { 1 }
     customer_id { 1 }
     merchant_id { 1 }
     status { "MyString" }
